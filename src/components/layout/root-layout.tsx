@@ -65,6 +65,9 @@ export function RootLayout() {
               <Link to="/disponibilidad" className="text-sm text-gray-600 hover:text-gray-900 [&.active]:font-semibold [&.active]:text-gray-900">
                 Disponibilidad
               </Link>
+              <Link to="/reservas" className="text-sm text-gray-600 hover:text-gray-900 [&.active]:font-semibold [&.active]:text-gray-900">
+                Reservas
+              </Link>
             </div>
           </div>
           <div className="flex items-center gap-4">

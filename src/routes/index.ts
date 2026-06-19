@@ -6,6 +6,8 @@ import { AssetsPage } from '@/pages/assets'
 import { AssetCreatePage } from '@/pages/assets/create'
 import { AssetEditPage } from '@/pages/assets/edit'
 import { AvailabilityPage } from '@/pages/availability'
+import { ReservationsPage } from '@/pages/reservations'
+import { ReservationCreatePage } from '@/pages/reservations/create'
 
 const rootRoute = createRootRoute({
   component: RootLayout,
@@ -47,6 +49,18 @@ const availabilityRoute = createRoute({
   component: AvailabilityPage,
 })
 
+const reservationsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/reservas',
+  component: ReservationsPage,
+})
+
+const reservationCreateRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/reservas/crear',
+  component: ReservationCreatePage,
+})
+
 export const routeTree = rootRoute.addChildren([
   loginRoute,
   dashboardRoute,
@@ -54,4 +68,6 @@ export const routeTree = rootRoute.addChildren([
   assetCreateRoute,
   assetEditRoute,
   availabilityRoute,
+  reservationsRoute,
+  reservationCreateRoute,
 ])

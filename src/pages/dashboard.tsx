@@ -8,6 +8,10 @@ interface DashboardData {
   draft_assets: number
   maintenance_assets: number
   occupancy_rate: number
+  total_reservations: number
+  active_reservations: number
+  upcoming_reservations: number
+  reserved_revenue: number
 }
 
 export function DashboardPage() {
@@ -22,13 +26,25 @@ export function DashboardPage() {
     <div>
       <h2 className="text-2xl font-bold text-gray-900 mb-6">Dashboard</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         <StatCard title="Tasa de Ocupación" value={`${data?.occupancy_rate ?? 0}%`} color="blue" />
         <StatCard title="Activos Totales" value={String(data?.total_assets ?? 0)} color="gray" />
         <StatCard title="Activos Disponibles" value={String(data?.active_assets ?? 0)} color="green" />
         <StatCard title="Activos Ocupados" value={String(data?.occupied_assets ?? 0)} color="yellow" />
         <StatCard title="En Borrador" value={String(data?.draft_assets ?? 0)} color="gray" />
         <StatCard title="En Mantenimiento" value={String(data?.maintenance_assets ?? 0)} color="red" />
+      </div>
+
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">Reservas</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard title="Reservas Confirmadas" value={String(data?.total_reservations ?? 0)} color="blue" />
+        <StatCard title="Reservas Activas" value={String(data?.active_reservations ?? 0)} color="green" />
+        <StatCard title="Próximas" value={String(data?.upcoming_reservations ?? 0)} color="yellow" />
+        <StatCard
+          title="Ingresos Reservados"
+          value={`$${(data?.reserved_revenue ?? 0).toLocaleString()}`}
+          color="green"
+        />
       </div>
     </div>
   )
