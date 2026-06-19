@@ -71,6 +71,9 @@ export function RootLayout() {
               <Link to="/cotizaciones" className="text-sm text-gray-600 hover:text-gray-900 [&.active]:font-semibold [&.active]:text-gray-900">
                 Cotizaciones
               </Link>
+              <Link to="/campanas" className="text-sm text-gray-600 hover:text-gray-900 [&.active]:font-semibold [&.active]:text-gray-900">
+                Campañas
+              </Link>
             </div>
           </div>
           <div className="flex items-center gap-4">

@@ -12,6 +12,9 @@ interface DashboardData {
   active_reservations: number
   upcoming_reservations: number
   reserved_revenue: number
+  total_campaigns: number
+  active_campaigns: number
+  planning_campaigns: number
 }
 
 export function DashboardPage() {
@@ -45,6 +48,13 @@ export function DashboardPage() {
           value={`$${(data?.reserved_revenue ?? 0).toLocaleString()}`}
           color="green"
         />
+      </div>
+
+      <h3 className="text-lg font-semibold text-gray-900 mb-4 mt-8">Campañas</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <StatCard title="Total Campañas" value={String(data?.total_campaigns ?? 0)} color="blue" />
+        <StatCard title="Campañas Activas" value={String(data?.active_campaigns ?? 0)} color="green" />
+        <StatCard title="En Planificación" value={String(data?.planning_campaigns ?? 0)} color="yellow" />
       </div>
     </div>
   )

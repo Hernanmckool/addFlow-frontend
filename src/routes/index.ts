@@ -11,6 +11,9 @@ import { ReservationCreatePage } from '@/pages/reservations/create'
 import { QuotationsPage } from '@/pages/quotations'
 import { QuotationCreatePage } from '@/pages/quotations/create'
 import { QuotationShowPage } from '@/pages/quotations/show'
+import { CampaignsPage } from '@/pages/campaigns'
+import { CampaignCreatePage } from '@/pages/campaigns/create'
+import { CampaignShowPage } from '@/pages/campaigns/show'
 
 const rootRoute = createRootRoute({
   component: RootLayout,
@@ -82,6 +85,24 @@ const quotationShowRoute = createRoute({
   component: QuotationShowPage,
 })
 
+const campaignsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/campanas',
+  component: CampaignsPage,
+})
+
+const campaignCreateRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/campanas/crear',
+  component: CampaignCreatePage,
+})
+
+const campaignShowRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/campanas/$campaignId',
+  component: CampaignShowPage,
+})
+
 export const routeTree = rootRoute.addChildren([
   loginRoute,
   dashboardRoute,
@@ -94,4 +115,7 @@ export const routeTree = rootRoute.addChildren([
   quotationsRoute,
   quotationCreateRoute,
   quotationShowRoute,
+  campaignsRoute,
+  campaignCreateRoute,
+  campaignShowRoute,
 ])
