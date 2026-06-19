@@ -8,6 +8,9 @@ import { AssetEditPage } from '@/pages/assets/edit'
 import { AvailabilityPage } from '@/pages/availability'
 import { ReservationsPage } from '@/pages/reservations'
 import { ReservationCreatePage } from '@/pages/reservations/create'
+import { QuotationsPage } from '@/pages/quotations'
+import { QuotationCreatePage } from '@/pages/quotations/create'
+import { QuotationShowPage } from '@/pages/quotations/show'
 
 const rootRoute = createRootRoute({
   component: RootLayout,
@@ -61,6 +64,24 @@ const reservationCreateRoute = createRoute({
   component: ReservationCreatePage,
 })
 
+const quotationsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/cotizaciones',
+  component: QuotationsPage,
+})
+
+const quotationCreateRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/cotizaciones/crear',
+  component: QuotationCreatePage,
+})
+
+const quotationShowRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/cotizaciones/$quotationId',
+  component: QuotationShowPage,
+})
+
 export const routeTree = rootRoute.addChildren([
   loginRoute,
   dashboardRoute,
@@ -70,4 +91,7 @@ export const routeTree = rootRoute.addChildren([
   availabilityRoute,
   reservationsRoute,
   reservationCreateRoute,
+  quotationsRoute,
+  quotationCreateRoute,
+  quotationShowRoute,
 ])
