@@ -5,6 +5,7 @@ import { DashboardPage } from '@/pages/dashboard'
 import { AssetsPage } from '@/pages/assets'
 import { AssetCreatePage } from '@/pages/assets/create'
 import { AssetEditPage } from '@/pages/assets/edit'
+import { AvailabilityPage } from '@/pages/availability'
 
 const rootRoute = createRootRoute({
   component: RootLayout,
@@ -40,10 +41,17 @@ const assetEditRoute = createRoute({
   component: AssetEditPage,
 })
 
+const availabilityRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/disponibilidad',
+  component: AvailabilityPage,
+})
+
 export const routeTree = rootRoute.addChildren([
   loginRoute,
   dashboardRoute,
   assetsRoute,
   assetCreateRoute,
   assetEditRoute,
+  availabilityRoute,
 ])
