@@ -30,18 +30,36 @@ export function QuotationsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Cotizaciones</h2>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Cotizaciones</h2>
+          <p className="text-sm text-gray-500 mt-1">Gestiona propuestas comerciales</p>
+        </div>
         <Link
           to="/cotizaciones/crear"
-          className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700"
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm"
         >
           Nueva Cotización
         </Link>
       </div>
 
       {isLoading ? (
-        <p className="text-gray-500">Cargando...</p>
+        <div className="flex justify-center py-12">
+          <div className="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+        </div>
+      ) : quotations.length === 0 ? (
+        <div className="bg-white rounded-xl border border-dashed border-gray-300 p-12 text-center">
+          <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <p className="text-gray-600 font-medium">No hay cotizaciones</p>
+          <p className="text-sm text-gray-400 mt-1">Crea tu primera cotización para comenzar</p>
+          <Link to="/cotizaciones/crear" className="inline-block mt-4 text-sm text-blue-600 hover:text-blue-800 font-medium">
+            Crear cotización
+          </Link>
+        </div>
       ) : (
         <div className="bg-white rounded-lg border overflow-hidden">
           <table className="w-full text-sm">

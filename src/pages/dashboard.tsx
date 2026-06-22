@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { Link } from '@tanstack/react-router'
 import api from '@/lib/api'
 
 interface DashboardData {
@@ -27,68 +28,121 @@ export function DashboardPage() {
     queryFn: async () => (await api.get('/api/dashboard')).data,
   })
 
-  if (isLoading) return <p className="text-gray-500">Cargando dashboard...</p>
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="w-6 h-6 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+      </div>
+    )
+  }
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Dashboard</h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        <StatCard title="Tasa de Ocupación" value={`${data?.occupancy_rate ?? 0}%`} color="blue" />
-        <StatCard title="Activos Totales" value={String(data?.total_assets ?? 0)} color="gray" />
-        <StatCard title="Activos Disponibles" value={String(data?.active_assets ?? 0)} color="green" />
-        <StatCard title="Activos Ocupados" value={String(data?.occupied_assets ?? 0)} color="yellow" />
-        <StatCard title="En Borrador" value={String(data?.draft_assets ?? 0)} color="gray" />
-        <StatCard title="En Mantenimiento" value={String(data?.maintenance_assets ?? 0)} color="red" />
+      {/* Header with quick actions */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Dashboard</h2>
+          <p className="text-sm text-gray-500 mt-1">Resumen general de AdFlow</p>
+        </div>
+        <div className="flex gap-2">
+          <Link to="/cotizaciones/crear" className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm">
+            Nueva Cotización
+          </Link>
+          <Link to="/clientes/crear" className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+            Nuevo Cliente
+          </Link>
+        </div>
       </div>
 
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Reservas</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Reservas Confirmadas" value={String(data?.total_reservations ?? 0)} color="blue" />
-        <StatCard title="Reservas Activas" value={String(data?.active_reservations ?? 0)} color="green" />
-        <StatCard title="Próximas" value={String(data?.upcoming_reservations ?? 0)} color="yellow" />
-        <StatCard
+      {/* Main KPI row */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <KpiCard
+          title="Tasa de Ocupación"
+          value={`${data?.occupancy_rate ?? 0}%`}
+          subtitle={`${data?.active_assets ?? 0} disponibles`}
+          accent="blue"
+        />
+        <KpiCard
           title="Ingresos Reservados"
           value={`$${(data?.reserved_revenue ?? 0).toLocaleString()}`}
-          color="green"
+          subtitle={`${data?.total_reservations ?? 0} reservas`}
+          accent="green"
+        />
+        <KpiCard
+          title="Campañas Activas"
+          value={String(data?.active_campaigns ?? 0)}
+          subtitle={`${data?.planning_campaigns ?? 0} en planificación`}
+          accent="purple"
+        />
+        <KpiCard
+          title="OTs Pendientes"
+          value={String(data?.pending_work_orders ?? 0)}
+          subtitle={`${data?.completed_work_orders ?? 0} completadas`}
+          accent="orange"
         />
       </div>
 
-      <h3 className="text-lg font-semibold text-gray-900 mb-4 mt-8">Campañas</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <StatCard title="Total Campañas" value={String(data?.total_campaigns ?? 0)} color="blue" />
-        <StatCard title="Campañas Activas" value={String(data?.active_campaigns ?? 0)} color="green" />
-        <StatCard title="En Planificación" value={String(data?.planning_campaigns ?? 0)} color="yellow" />
-      </div>
+      {/* Detail sections */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Activos */}
+        <div className="bg-white rounded-xl border p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-semibold text-gray-700">Activos Publicitarios</h3>
+            <Link to="/assets" className="text-xs text-blue-600 hover:text-blue-800">Ver todos</Link>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <MiniStat label="Totales" value={data?.total_assets ?? 0} />
+            <MiniStat label="Disponibles" value={data?.active_assets ?? 0} color="green" />
+            <MiniStat label="Ocupados" value={data?.occupied_assets ?? 0} color="blue" />
+            <MiniStat label="Mantenimiento" value={data?.maintenance_assets ?? 0} color="yellow" />
+          </div>
+        </div>
 
-      <h3 className="text-lg font-semibold text-gray-900 mb-4 mt-8">Órdenes de Trabajo</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-        <StatCard title="OTs Pendientes" value={String(data?.pending_work_orders ?? 0)} color="yellow" />
-        <StatCard title="OTs Completadas" value={String(data?.completed_work_orders ?? 0)} color="green" />
-      </div>
-
-      <h3 className="text-lg font-semibold text-gray-900 mb-4 mt-8">Evidencias</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-        <StatCard title="Total Evidencias" value={String(data?.total_evidences ?? 0)} color="blue" />
-        <StatCard title="OTs con Evidencia" value={String(data?.work_orders_with_evidence ?? 0)} color="green" />
+        {/* Reservas */}
+        <div className="bg-white rounded-xl border p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-semibold text-gray-700">Reservas</h3>
+            <Link to="/reservas" className="text-xs text-blue-600 hover:text-blue-800">Ver todas</Link>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <MiniStat label="Confirmadas" value={data?.total_reservations ?? 0} color="green" />
+            <MiniStat label="Activas ahora" value={data?.active_reservations ?? 0} color="blue" />
+            <MiniStat label="Próximas" value={data?.upcoming_reservations ?? 0} color="purple" />
+            <MiniStat label="Total Evidencias" value={data?.total_evidences ?? 0} />
+          </div>
+        </div>
       </div>
     </div>
   )
 }
 
-function StatCard({ title, value, color }: { title: string; value: string; color: string }) {
-  const colors: Record<string, string> = {
-    blue: 'bg-blue-50 border-blue-200 text-blue-900',
-    green: 'bg-green-50 border-green-200 text-green-900',
-    yellow: 'bg-yellow-50 border-yellow-200 text-yellow-900',
-    red: 'bg-red-50 border-red-200 text-red-900',
-    gray: 'bg-gray-50 border-gray-200 text-gray-900',
+function KpiCard({ title, value, subtitle, accent }: { title: string; value: string; subtitle: string; accent: string }) {
+  const accents: Record<string, string> = {
+    blue: 'border-l-blue-500',
+    green: 'border-l-green-500',
+    purple: 'border-l-purple-500',
+    orange: 'border-l-orange-500',
   }
 
   return (
-    <div className={`rounded-lg border p-6 ${colors[color]}`}>
-      <p className="text-sm opacity-70">{title}</p>
-      <p className="text-3xl font-bold mt-1">{value}</p>
+    <div className={`bg-white rounded-xl border border-l-4 ${accents[accent]} p-5 shadow-sm`}>
+      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">{title}</p>
+      <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
+      <p className="text-xs text-gray-400 mt-1">{subtitle}</p>
+    </div>
+  )
+}
+
+function MiniStat({ label, value, color }: { label: string; value: number; color?: string }) {
+  const dotColor = color
+    ? { green: 'bg-green-500', blue: 'bg-blue-500', yellow: 'bg-yellow-500', purple: 'bg-purple-500' }[color] ?? 'bg-gray-400'
+    : 'bg-gray-400'
+
+  return (
+    <div className="flex items-center gap-2">
+      <span className={`w-2 h-2 rounded-full ${dotColor}`} />
+      <span className="text-sm text-gray-600">{label}</span>
+      <span className="text-sm font-semibold text-gray-900 ml-auto">{value}</span>
     </div>
   )
 }
