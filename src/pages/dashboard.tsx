@@ -17,6 +17,8 @@ interface DashboardData {
   planning_campaigns: number
   pending_work_orders: number
   completed_work_orders: number
+  total_evidences: number
+  work_orders_with_evidence: number
 }
 
 export function DashboardPage() {
@@ -63,6 +65,12 @@ export function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
         <StatCard title="OTs Pendientes" value={String(data?.pending_work_orders ?? 0)} color="yellow" />
         <StatCard title="OTs Completadas" value={String(data?.completed_work_orders ?? 0)} color="green" />
+      </div>
+
+      <h3 className="text-lg font-semibold text-gray-900 mb-4 mt-8">Evidencias</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+        <StatCard title="Total Evidencias" value={String(data?.total_evidences ?? 0)} color="blue" />
+        <StatCard title="OTs con Evidencia" value={String(data?.work_orders_with_evidence ?? 0)} color="green" />
       </div>
     </div>
   )

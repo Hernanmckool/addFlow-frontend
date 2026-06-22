@@ -2,6 +2,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams, useNavigate } from '@tanstack/react-router'
 import { AxiosError } from 'axios'
 import { fetchWorkOrder, transitionWorkOrder } from '@/lib/work-orders'
+import { EvidenceGallery } from '@/components/evidences/evidence-gallery'
+import { EvidenceUpload } from '@/components/evidences/evidence-upload'
 import { useState } from 'react'
 
 const TYPE_LABELS: Record<string, string> = {
@@ -160,6 +162,23 @@ export function WorkOrderShowPage() {
           </tbody>
         </table>
       </div>
+
+      {/* Evidences */}
+      {(workOrder.status === 'in_progress' || workOrder.status === 'completed') && (
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Evidencias</h3>
+          <EvidenceUpload
+            workOrderId={workOrder.id}
+            campaignAssets={workOrder.work_order_assets.map((woa) => ({
+              id: woa.campaign_asset.id,
+              asset: woa.campaign_asset.asset,
+            }))}
+          />
+          <div className="mt-4">
+            <EvidenceGallery workOrderId={workOrder.id} />
+          </div>
+        </div>
+      )}
 
       <div className="mt-6">
         <button onClick={() => navigate({ to: '/ordenes' })}
