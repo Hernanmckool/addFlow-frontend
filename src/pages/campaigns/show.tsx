@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { useParams, useNavigate } from '@tanstack/react-router'
+import { useParams, useNavigate, Link } from '@tanstack/react-router'
 import { AxiosError } from 'axios'
 import { fetchCampaign, transitionCampaign } from '@/lib/campaigns'
 import { useState } from 'react'
@@ -91,6 +91,18 @@ export function CampaignShowPage() {
       {actionError && (
         <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-4">
           <p className="text-sm text-red-700">{actionError}</p>
+        </div>
+      )}
+
+      {/* Quick actions */}
+      {(campaign.status === 'planning' || campaign.status === 'active') && (
+        <div className="mb-6">
+          <Link
+            to="/ordenes/crear"
+            className="inline-flex items-center gap-1 border border-indigo-600 text-indigo-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-50"
+          >
+            + Crear Orden de Trabajo
+          </Link>
         </div>
       )}
 

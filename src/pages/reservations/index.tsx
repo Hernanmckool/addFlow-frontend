@@ -19,17 +19,28 @@ export function ReservationsPage() {
   })
 
   const reservations: Reservation[] = data?.data ?? []
+  const hasConfirmed = reservations.some((r) => r.status === 'confirmed')
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Reservas</h2>
-        <Link
-          to="/reservas/crear"
-          className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700"
-        >
-          Nueva Reserva
-        </Link>
+        <div className="flex gap-2">
+          {hasConfirmed && (
+            <Link
+              to="/campanas/crear"
+              className="border border-green-600 text-green-600 px-4 py-2 rounded-md text-sm hover:bg-green-50"
+            >
+              Crear Campaña
+            </Link>
+          )}
+          <Link
+            to="/reservas/crear"
+            className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700"
+          >
+            Nueva Reserva
+          </Link>
+        </div>
       </div>
 
       {isLoading ? (

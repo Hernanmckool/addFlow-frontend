@@ -62,14 +62,14 @@ export function RootLayout() {
               <Link to="/assets" className="text-sm text-gray-600 hover:text-gray-900 [&.active]:font-semibold [&.active]:text-gray-900">
                 Activos
               </Link>
-              <Link to="/disponibilidad" className="text-sm text-gray-600 hover:text-gray-900 [&.active]:font-semibold [&.active]:text-gray-900">
-                Disponibilidad
-              </Link>
-              <Link to="/reservas" className="text-sm text-gray-600 hover:text-gray-900 [&.active]:font-semibold [&.active]:text-gray-900">
-                Reservas
+              <Link to="/clientes" className="text-sm text-gray-600 hover:text-gray-900 [&.active]:font-semibold [&.active]:text-gray-900">
+                Clientes
               </Link>
               <Link to="/cotizaciones" className="text-sm text-gray-600 hover:text-gray-900 [&.active]:font-semibold [&.active]:text-gray-900">
                 Cotizaciones
+              </Link>
+              <Link to="/reservas" className="text-sm text-gray-600 hover:text-gray-900 [&.active]:font-semibold [&.active]:text-gray-900">
+                Reservas
               </Link>
               <Link to="/campanas" className="text-sm text-gray-600 hover:text-gray-900 [&.active]:font-semibold [&.active]:text-gray-900">
                 Campañas
