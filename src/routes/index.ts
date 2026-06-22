@@ -14,6 +14,9 @@ import { QuotationShowPage } from '@/pages/quotations/show'
 import { CampaignsPage } from '@/pages/campaigns'
 import { CampaignCreatePage } from '@/pages/campaigns/create'
 import { CampaignShowPage } from '@/pages/campaigns/show'
+import { WorkOrdersPage } from '@/pages/work-orders'
+import { WorkOrderCreatePage } from '@/pages/work-orders/create'
+import { WorkOrderShowPage } from '@/pages/work-orders/show'
 
 const rootRoute = createRootRoute({
   component: RootLayout,
@@ -103,6 +106,24 @@ const campaignShowRoute = createRoute({
   component: CampaignShowPage,
 })
 
+const workOrdersRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/ordenes',
+  component: WorkOrdersPage,
+})
+
+const workOrderCreateRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/ordenes/crear',
+  component: WorkOrderCreatePage,
+})
+
+const workOrderShowRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/ordenes/$workOrderId',
+  component: WorkOrderShowPage,
+})
+
 export const routeTree = rootRoute.addChildren([
   loginRoute,
   dashboardRoute,
@@ -118,4 +139,7 @@ export const routeTree = rootRoute.addChildren([
   campaignsRoute,
   campaignCreateRoute,
   campaignShowRoute,
+  workOrdersRoute,
+  workOrderCreateRoute,
+  workOrderShowRoute,
 ])

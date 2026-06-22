@@ -15,6 +15,8 @@ interface DashboardData {
   total_campaigns: number
   active_campaigns: number
   planning_campaigns: number
+  pending_work_orders: number
+  completed_work_orders: number
 }
 
 export function DashboardPage() {
@@ -55,6 +57,12 @@ export function DashboardPage() {
         <StatCard title="Total Campañas" value={String(data?.total_campaigns ?? 0)} color="blue" />
         <StatCard title="Campañas Activas" value={String(data?.active_campaigns ?? 0)} color="green" />
         <StatCard title="En Planificación" value={String(data?.planning_campaigns ?? 0)} color="yellow" />
+      </div>
+
+      <h3 className="text-lg font-semibold text-gray-900 mb-4 mt-8">Órdenes de Trabajo</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+        <StatCard title="OTs Pendientes" value={String(data?.pending_work_orders ?? 0)} color="yellow" />
+        <StatCard title="OTs Completadas" value={String(data?.completed_work_orders ?? 0)} color="green" />
       </div>
     </div>
   )
