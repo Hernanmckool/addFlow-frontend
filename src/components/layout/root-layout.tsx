@@ -54,10 +54,13 @@ export function RootLayout() {
   if (!isAuthenticated) return null
 
   return (
-    <div className="flex h-screen bg-gray-50/50">
+    <div className="flex h-screen" style={{ background: '#F8FAFC' }}>
+      {/* Background gradient */}
+      <div className="fixed inset-0 pointer-events-none" style={{ background: 'radial-gradient(circle at top, rgba(37,99,235,.05), transparent 45%)' }} />
+
       {/* Sidebar */}
-      <aside className="w-56 bg-white border-r border-gray-200/80 flex flex-col fixed h-full z-30">
-        <div className="h-14 flex items-center px-5 border-b border-gray-100">
+      <aside className="w-56 bg-[#FCFCFD] flex flex-col fixed h-full z-30" style={{ boxShadow: '2px 0 30px rgba(15,23,42,.05)' }}>
+        <div className="h-14 flex items-center px-5 border-b border-gray-100/80">
           <Link to="/" className="flex items-center gap-2.5">
             <AdFlowLogo variant="dark" size="sm" />
             <AdFlowWordmark variant="dark" />
@@ -73,10 +76,10 @@ export function RootLayout() {
               <Link
                 key={item.to}
                 to={item.to}
-                className={`flex items-center gap-2.5 px-2.5 py-[7px] rounded-md text-[13px] font-medium transition-colors ${
+                className={`flex items-center gap-2.5 px-2.5 py-[7px] rounded-[8px] text-[13px] font-medium transition-all duration-150 ${
                   isActive
-                    ? 'bg-gray-100 text-gray-900'
-                    : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                    ? 'bg-[#2563EB]/[0.08] text-[#1e40af] shadow-sm shadow-[#2563EB]/5'
+                    : 'text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F5F9]'
                 }`}
               >
                 <item.icon active={isActive} />
@@ -86,19 +89,19 @@ export function RootLayout() {
           })}
         </nav>
 
-        <div className="p-3 border-t border-gray-100">
+        <div className="p-3 border-t border-gray-100/80">
           <div className="flex items-center gap-2.5 px-2.5 py-2">
-            <div className="w-7 h-7 bg-gray-100 rounded-full flex items-center justify-center shrink-0">
-              <span className="text-[11px] font-semibold text-gray-600">{user.name.charAt(0)}</span>
+            <div className="w-7 h-7 bg-gradient-to-b from-[#3B82F6] to-[#2563EB] rounded-full flex items-center justify-center shrink-0">
+              <span className="text-[11px] font-semibold text-white">{user.name.charAt(0)}</span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[13px] font-medium text-gray-900 truncate">{user.name}</p>
-              <p className="text-[11px] text-gray-400 truncate">{user.email}</p>
+              <p className="text-[13px] font-medium text-[#0F172A] truncate">{user.name}</p>
+              <p className="text-[11px] text-[#94A3B8] truncate">{user.email}</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="w-full mt-1 text-[12px] text-gray-400 hover:text-gray-600 text-left px-2.5 py-1 transition-colors"
+            className="w-full mt-1 text-[12px] text-[#94A3B8] hover:text-[#64748B] text-left px-2.5 py-1 rounded-[6px] hover:bg-[#F8FAFC] transition-all duration-150"
           >
             Cerrar sesión
           </button>
@@ -106,7 +109,7 @@ export function RootLayout() {
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 ml-56 overflow-y-auto">
+      <main className="flex-1 ml-56 overflow-y-auto relative z-10">
         <div className="max-w-6xl mx-auto px-8 py-8">
           <Outlet />
         </div>
