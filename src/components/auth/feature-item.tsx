@@ -10,12 +10,12 @@ interface FeatureItemProps {
 export function FeatureItem({ icon: Icon, title, description }: FeatureItemProps) {
   return (
     <div className="flex items-start gap-4">
-      <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center shrink-0">
-        <Icon className="w-[18px] h-[18px] text-blue-400" />
+      <div className="w-10 h-10 rounded-xl bg-[#1F2937] border border-[#1F2937] flex items-center justify-center shrink-0">
+        <Icon className="w-[18px] h-[18px] text-[#60A5FA]" />
       </div>
       <div className="pt-0.5">
-        <p className="text-[15px] font-semibold text-white">{title}</p>
-        <p className="text-[13px] text-gray-500 mt-0.5 leading-relaxed">{description}</p>
+        <p className="text-[14px] font-semibold text-white leading-tight">{title}</p>
+        <p className="text-[13px] text-[#6B7280] mt-1 leading-relaxed">{description}</p>
       </div>
     </div>
   )

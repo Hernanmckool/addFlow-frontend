@@ -38,17 +38,17 @@ export function LoginForm() {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Email */}
       <div>
-        <label htmlFor="email" className="block text-[13px] font-medium text-gray-600 mb-2">
+        <label htmlFor="email" className="block text-[13px] font-medium text-[#374151] mb-2">
           Email
         </label>
         <div className="relative">
-          <User className="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-gray-400" />
+          <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#9CA3AF]" />
           <input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full pl-12 pr-4 py-[14px] bg-white border border-gray-200 rounded-xl text-[15px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
+            className="w-full h-[52px] pl-12 pr-4 bg-white border border-[#E5E7EB] rounded-[12px] text-[15px] text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all"
             placeholder="tu@empresa.com"
             required
           />
@@ -57,33 +57,33 @@ export function LoginForm() {
 
       {/* Password */}
       <div>
-        <label htmlFor="password" className="block text-[13px] font-medium text-gray-600 mb-2">
+        <label htmlFor="password" className="block text-[13px] font-medium text-[#374151] mb-2">
           Contraseña
         </label>
         <div className="relative">
-          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-gray-400" />
+          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#9CA3AF]" />
           <input
             id="password"
             type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full pl-12 pr-12 py-[14px] bg-white border border-gray-200 rounded-xl text-[15px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
+            className="w-full h-[52px] pl-12 pr-12 bg-white border border-[#E5E7EB] rounded-[12px] text-[15px] text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all"
             required
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#6B7280] transition-colors"
             tabIndex={-1}
           >
-            {showPassword ? <EyeOff className="w-[18px] h-[18px]" /> : <Eye className="w-[18px] h-[18px]" />}
+            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
           </button>
         </div>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="bg-red-50 border border-red-100 rounded-xl px-4 py-3">
+        <div className="bg-red-50 border border-red-200 rounded-[12px] px-4 py-3">
           <p className="text-red-600 text-[13px]">{error}</p>
         </div>
       )}
@@ -92,7 +92,7 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-[#0f172a] text-white py-[14px] px-4 rounded-xl text-[15px] font-medium hover:bg-[#1e293b] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="w-full h-[52px] bg-[#111827] text-white rounded-[12px] text-[15px] font-semibold hover:bg-[#1F2937] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
         {loading ? (
           <span className="flex items-center justify-center gap-2">
@@ -105,8 +105,11 @@ export function LoginForm() {
       </button>
 
       {/* Demo */}
-      <p className="text-[13px] text-blue-500 text-center">
-        Demo: admin@adflow.io / password
+      <p className="text-[13px] text-center pt-1">
+        <span className="text-[#6B7280]">Demo: </span>
+        <span className="text-[#2563EB]">admin@adflow.io</span>
+        <span className="text-[#6B7280]"> / </span>
+        <span className="text-[#2563EB]">password</span>
       </p>
     </form>
   )
