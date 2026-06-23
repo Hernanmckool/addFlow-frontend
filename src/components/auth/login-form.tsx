@@ -3,6 +3,8 @@ import { useNavigate } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import { User, Lock, Eye, EyeOff } from 'lucide-react'
 import { login } from '@/lib/auth'
+import { AppInput } from '@/design-system/components/AppInput'
+import { AppButton } from '@/design-system/components/AppButton'
 
 export function LoginForm() {
   const navigate = useNavigate()
@@ -36,76 +38,48 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Email */}
-      <div>
-        <label htmlFor="email" className="block text-[13px] font-medium text-[#374151] mb-2">
-          Email
-        </label>
-        <div className="relative">
-          <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#9CA3AF]" />
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full h-[52px] pl-12 pr-4 bg-white border border-[#E5E7EB] rounded-[12px] text-[15px] text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all"
-            placeholder="tu@empresa.com"
-            required
-          />
-        </div>
-      </div>
+      <AppInput
+        id="email"
+        type="email"
+        label="Email"
+        icon={User}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="tu@empresa.com"
+        required
+      />
 
-      {/* Password */}
-      <div>
-        <label htmlFor="password" className="block text-[13px] font-medium text-[#374151] mb-2">
-          Contraseña
-        </label>
-        <div className="relative">
-          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#9CA3AF]" />
-          <input
-            id="password"
-            type={showPassword ? 'text' : 'password'}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full h-[52px] pl-12 pr-12 bg-white border border-[#E5E7EB] rounded-[12px] text-[15px] text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all"
-            required
-          />
+      <AppInput
+        id="password"
+        type={showPassword ? 'text' : 'password'}
+        label="Contraseña"
+        icon={Lock}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+        rightElement={
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#6B7280] transition-colors"
+            className="text-[#9CA3AF] hover:text-[#6B7280] transition-colors"
             tabIndex={-1}
           >
             {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
           </button>
-        </div>
-      </div>
+        }
+      />
 
-      {/* Error */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-[12px] px-4 py-3">
-          <p className="text-red-600 text-[13px]">{error}</p>
+        <div className="bg-[#EF4444]/5 border border-[#EF4444]/20 rounded-[12px] px-4 py-3">
+          <p className="text-[#EF4444] text-[13px]">{error}</p>
         </div>
       )}
 
-      {/* Submit */}
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full h-[52px] bg-[#111827] text-white rounded-[12px] text-[15px] font-semibold hover:bg-[#1F2937] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-      >
-        {loading ? (
-          <span className="flex items-center justify-center gap-2">
-            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            Ingresando...
-          </span>
-        ) : (
-          'Continuar'
-        )}
-      </button>
+      <AppButton type="submit" fullWidth loading={loading}>
+        Continuar
+      </AppButton>
 
-      {/* Demo */}
-      <p className="text-[13px] text-center pt-1">
+      <p className="text-[13px] text-center">
         <span className="text-[#6B7280]">Demo: </span>
         <span className="text-[#2563EB]">admin@adflow.io</span>
         <span className="text-[#6B7280]"> / </span>
