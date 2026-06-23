@@ -2,6 +2,7 @@ import { Outlet, Link, useNavigate, useLocation } from '@tanstack/react-router'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getUser, logout } from '@/lib/auth'
 import { useEffect } from 'react'
+import { AdFlowLogo, AdFlowWordmark } from '@/components/auth/adflow-logo'
 
 const navItems = [
   { to: '/' as const, label: 'Dashboard', icon: DashboardIcon },
@@ -58,10 +59,8 @@ export function RootLayout() {
       <aside className="w-56 bg-white border-r border-gray-200/80 flex flex-col fixed h-full z-30">
         <div className="h-14 flex items-center px-5 border-b border-gray-100">
           <Link to="/" className="flex items-center gap-2.5">
-            <div className="w-7 h-7 bg-gray-900 rounded-lg flex items-center justify-center">
-              <span className="text-white font-semibold text-[11px] tracking-tight">AF</span>
-            </div>
-            <span className="font-semibold text-gray-900 text-[15px]">AdFlow</span>
+            <AdFlowLogo variant="dark" size="sm" />
+            <AdFlowWordmark variant="dark" />
           </Link>
         </div>
 
