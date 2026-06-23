@@ -35,39 +35,45 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Email */}
       <div>
-        <label htmlFor="email" className="block text-[13px] font-medium text-gray-700 mb-2">Email</label>
+        <label htmlFor="email" className="block text-[13px] font-medium text-gray-600 mb-2">
+          Email
+        </label>
         <div className="relative">
-          <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-gray-400" />
+          <User className="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-gray-400" />
           <input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-[14px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
+            className="w-full pl-12 pr-4 py-[14px] bg-white border border-gray-200 rounded-xl text-[15px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
             placeholder="tu@empresa.com"
             required
           />
         </div>
       </div>
 
+      {/* Password */}
       <div>
-        <label htmlFor="password" className="block text-[13px] font-medium text-gray-700 mb-2">Contraseña</label>
+        <label htmlFor="password" className="block text-[13px] font-medium text-gray-600 mb-2">
+          Contraseña
+        </label>
         <div className="relative">
-          <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-gray-400" />
+          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-gray-400" />
           <input
             id="password"
             type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full pl-11 pr-12 py-3 bg-white border border-gray-200 rounded-xl text-[14px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
+            className="w-full pl-12 pr-12 py-[14px] bg-white border border-gray-200 rounded-xl text-[15px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all"
             required
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
             tabIndex={-1}
           >
             {showPassword ? <EyeOff className="w-[18px] h-[18px]" /> : <Eye className="w-[18px] h-[18px]" />}
@@ -75,16 +81,18 @@ export function LoginForm() {
         </div>
       </div>
 
+      {/* Error */}
       {error && (
         <div className="bg-red-50 border border-red-100 rounded-xl px-4 py-3">
           <p className="text-red-600 text-[13px]">{error}</p>
         </div>
       )}
 
+      {/* Submit */}
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-[#0f172a] text-white py-3.5 px-4 rounded-xl text-[14px] font-medium hover:bg-[#1e293b] disabled:opacity-50 disabled:cursor-not-allowed transition-colors mt-1"
+        className="w-full bg-[#0f172a] text-white py-[14px] px-4 rounded-xl text-[15px] font-medium hover:bg-[#1e293b] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
         {loading ? (
           <span className="flex items-center justify-center gap-2">
@@ -96,7 +104,8 @@ export function LoginForm() {
         )}
       </button>
 
-      <p className="text-[13px] text-blue-500 text-center pt-1">
+      {/* Demo */}
+      <p className="text-[13px] text-blue-500 text-center">
         Demo: admin@adflow.io / password
       </p>
     </form>
