@@ -1,6 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { fetchClients } from '@/lib/reservations'
+import { PageHeader } from '@/components/ui/page-header'
+import { EmptyState } from '@/components/ui/empty-state'
+import { Spinner } from '@/components/ui/spinner'
+import { Badge } from '@/components/ui/badge'
 
 export function ClientsPage() {
   const { data: clients, isLoading } = useQuery({
@@ -8,56 +12,52 @@ export function ClientsPage() {
     queryFn: fetchClients,
   })
 
+  if (isLoading) return <Spinner />
+
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Clientes</h2>
-        <Link
-          to="/clientes/crear"
-          className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700"
-        >
-          Nuevo Cliente
-        </Link>
-      </div>
+      <PageHeader
+        title="Clientes"
+        description="Directorio de clientes y agencias"
+        action={{ label: 'Nuevo cliente', to: '/clientes/crear' }}
+      />
 
-      {isLoading ? (
-        <p className="text-gray-500">Cargando...</p>
+      {!clients || clients.length === 0 ? (
+        <EmptyState
+          title="Sin clientes"
+          description="Registra tu primer cliente para comenzar a cotizar"
+          actionLabel="Registrar cliente"
+          actionTo="/clientes/crear"
+        />
       ) : (
-        <div className="bg-white rounded-lg border overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b">
-              <tr>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Nombre</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Estado</th>
-                <th className="text-right px-4 py-3 font-medium text-gray-600">Acciones</th>
+        <div className="bg-white rounded-xl border border-gray-200/80 overflow-hidden">
+          <table className="w-full text-[13px]">
+            <thead>
+              <tr className="border-b border-gray-100">
+                <th className="text-left px-5 py-3 text-[12px] font-medium text-gray-500 uppercase tracking-wide">Nombre</th>
+                <th className="text-left px-5 py-3 text-[12px] font-medium text-gray-500 uppercase tracking-wide">Estado</th>
+                <th className="text-right px-5 py-3"></th>
               </tr>
             </thead>
-            <tbody className="divide-y">
-              {clients?.map((client) => (
-                <tr key={client.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium">{client.name}</td>
-                  <td className="px-4 py-3">
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${
-                      client.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
-                    }`}>
-                      {client.status === 'active' ? 'Activo' : client.status}
-                    </span>
+            <tbody className="divide-y divide-gray-50">
+              {clients.map((client) => (
+                <tr key={client.id} className="hover:bg-gray-50/50 transition-colors">
+                  <td className="px-5 py-3.5 font-medium text-gray-900">{client.name}</td>
+                  <td className="px-5 py-3.5">
+                    <Badge
+                      label={client.status === 'active' ? 'Activo' : client.status}
+                      variant={client.status === 'active' ? 'success' : 'default'}
+                    />
                   </td>
-                  <td className="px-4 py-3 text-right">
-                    <Link
-                      to="/cotizaciones/crear"
-                      className="text-blue-600 hover:text-blue-800 text-xs"
-                    >
-                      Cotizar
+                  <td className="px-5 py-3.5 text-right">
+                    <Link to="/cotizaciones/crear" className="text-[12px] text-gray-500 hover:text-gray-900 font-medium transition-colors">
+                      Cotizar →
                     </Link>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          {(!clients || clients.length === 0) && (
-            <p className="text-center text-gray-500 py-8">No hay clientes registrados.</p>
-          )}
         </div>
       )}
     </div>
