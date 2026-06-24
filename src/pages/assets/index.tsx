@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import {
   CheckCircle2,
   DollarSign,
@@ -306,10 +306,12 @@ function AssetsTable({
   assets: Asset[]
   onDelete: (id: string) => void
 }) {
+  const navigate = useNavigate()
   return (
     <AppTable<Asset>
       data={assets}
       keyExtractor={(a) => a.id}
+      onRowClick={(a) => navigate({ to: '/assets/$assetId', params: { assetId: a.id } })}
       columns={[
         {
           key: 'code',
@@ -362,7 +364,10 @@ function AssetsTable({
           header: 'Acciones',
           align: 'right',
           render: (a) => (
-            <div className="flex items-center justify-end gap-3">
+            <div
+              className="flex items-center justify-end gap-3"
+              onClick={(e) => e.stopPropagation()}
+            >
               <Link
                 to="/assets/$assetId/edit"
                 params={{ assetId: a.id }}

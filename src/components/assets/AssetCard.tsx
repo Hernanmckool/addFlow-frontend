@@ -35,7 +35,8 @@ export function AssetCard({ asset }: AssetCardProps) {
       variant="default"
       className="group overflow-hidden hover:shadow-md hover:border-[#D1D5DB] hover:-translate-y-0.5 transition-all duration-200"
     >
-      {/* Media / placeholder by type */}
+      <Link to="/assets/$assetId" params={{ assetId: asset.id }} className="block">
+        {/* Media / placeholder by type */}
       <div className="relative aspect-[16/10] overflow-hidden">
         <AssetTypeIllustration
           type={asset.asset_type?.name}
@@ -109,6 +110,8 @@ export function AssetCard({ asset }: AssetCardProps) {
           </div>
         </div>
       </div>
+
+      </Link>
 
       {/* Actions */}
       <div className="flex items-center gap-2 border-t border-[#F3F4F6] p-3">
