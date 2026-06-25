@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { Link, useNavigate } from '@tanstack/react-router'
 import {
   Building2,
   LayoutGrid,
@@ -287,28 +288,26 @@ function ClientCard({ client }: { client: Client }) {
 
       {/* Actions */}
       <div className="mt-4 flex items-center justify-end gap-3 border-t border-[#F3F4F6] pt-4">
-        <RowActions />
+        <RowActions clientId={client.id} />
       </div>
     </AppCard>
   )
 }
 
 /**
- * Detail/edit screens for clients don't exist yet (this task covers the listing
- * only). Actions are rendered as disabled placeholders to preserve the premium
- * layout without linking to non-existent routes.
+ * "Ver detalle" links to the client detail screen. "Editar" stays disabled
+ * until the client edit screen exists.
  */
-function RowActions() {
+function RowActions({ clientId }: { clientId: string }) {
   return (
     <>
-      <button
-        type="button"
-        disabled
-        title="Disponible próximamente"
-        className="text-[12px] font-semibold text-[#94A3B8] cursor-not-allowed"
+      <Link
+        to="/clientes/$clientId"
+        params={{ clientId }}
+        className="text-[12px] font-semibold text-[#2563EB] hover:underline"
       >
         Ver detalle
-      </button>
+      </Link>
       <button
         type="button"
         disabled
@@ -322,10 +321,12 @@ function RowActions() {
 }
 
 function ClientsTable({ clients }: { clients: Client[] }) {
+  const navigate = useNavigate()
   return (
     <AppTable<Client>
       data={clients}
       keyExtractor={(c) => c.id}
+      onRowClick={(c) => navigate({ to: '/clientes/$clientId', params: { clientId: c.id } })}
       columns={[
         {
           key: 'name',
@@ -385,9 +386,9 @@ function ClientsTable({ clients }: { clients: Client[] }) {
           key: 'actions',
           header: 'Acciones',
           align: 'right',
-          render: () => (
+          render: (c) => (
             <div className="flex items-center justify-end gap-3" onClick={(e) => e.stopPropagation()}>
-              <RowActions />
+              <RowActions clientId={c.id} />
             </div>
           ),
         },

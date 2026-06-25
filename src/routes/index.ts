@@ -8,6 +8,7 @@ import { AssetEditPage } from '@/pages/assets/edit'
 import { AssetShowPage } from '@/pages/assets/show'
 import { ClientsPage } from '@/pages/clients'
 import { ClientCreatePage } from '@/pages/clients/create'
+import { ClientShowPage } from '@/pages/clients/show'
 import { AvailabilityPage } from '@/pages/availability'
 import { ReservationsPage } from '@/pages/reservations'
 import { ReservationCreatePage } from '@/pages/reservations/create'
@@ -71,6 +72,12 @@ const clientCreateRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/clientes/crear',
   component: ClientCreatePage,
+})
+
+const clientShowRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/clientes/$clientId',
+  component: ClientShowPage,
 })
 
 const availabilityRoute = createRoute({
@@ -154,6 +161,7 @@ export const routeTree = rootRoute.addChildren([
   assetShowRoute,
   clientsRoute,
   clientCreateRoute,
+  clientShowRoute,
   availabilityRoute,
   reservationsRoute,
   reservationCreateRoute,
