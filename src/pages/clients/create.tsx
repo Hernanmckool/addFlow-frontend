@@ -42,6 +42,13 @@ const TYPE_LABEL: Record<string, string> = {
   other: 'Otro',
 }
 
+const PAYMENT_TERMS_OPTIONS = [
+  { value: 'cash', label: 'Contado' },
+  { value: '15days', label: '15 días' },
+  { value: '30days', label: '30 días' },
+  { value: '60days', label: '60 días' },
+]
+
 export function ClientCreatePage() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
@@ -50,20 +57,19 @@ export function ClientCreatePage() {
   const mutation = useMutation({
     mutationFn: async (data: ClientFormData) => {
       await getCsrfCookie()
+      // Backend expects flat contact fields and an enum payment_terms.
+      // Empty optional values are omitted so the API's `nullable` rules pass.
       const response = await api.post('/api/clients', {
         name: data.name,
-        legal_name: data.legal_name,
-        tax_id: data.tax_id,
+        legal_name: data.legal_name || undefined,
+        tax_id: data.tax_id || undefined,
         type: data.type,
-        industry: data.industry,
-        payment_terms: data.payment_terms,
-        contact: {
-          name: data.contact_name,
-          email: data.contact_email,
-          phone: data.contact_phone,
-          position: data.contact_position,
-          is_primary: true,
-        },
+        industry: data.industry || undefined,
+        payment_terms: data.payment_terms || undefined,
+        contact_name: data.contact_name,
+        contact_email: data.contact_email || undefined,
+        contact_phone: data.contact_phone || undefined,
+        contact_position: data.contact_position || undefined,
       })
       return response.data
     },
@@ -212,9 +218,10 @@ export function ClientCreatePage() {
                 error={errors.industry?.message}
                 {...register('industry')}
               />
-              <AppInput
-                label="Plazo de pago (días)"
-                placeholder="30"
+              <AppSelect
+                label="Plazo de pago"
+                placeholder="Sin definir"
+                options={PAYMENT_TERMS_OPTIONS}
                 error={errors.payment_terms?.message}
                 {...register('payment_terms')}
               />
