@@ -5,7 +5,15 @@ import { z } from 'zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { AxiosError } from 'axios'
+import { Building2, Mail, Phone, User } from 'lucide-react'
 import api, { getCsrfCookie } from '@/lib/api'
+import { PageHeader } from '@/design-system/components/PageHeader'
+import { AppCard } from '@/design-system/components/AppCard'
+import { SectionCard } from '@/design-system/components/SectionCard'
+import { AppInput } from '@/design-system/components/AppInput'
+import { AppSelect } from '@/design-system/components/AppSelect'
+import { AppButton } from '@/design-system/components/AppButton'
+import { AppBadge } from '@/design-system/components/AppBadge'
 
 const clientSchema = z.object({
   name: z.string().min(1, 'Nombre es requerido'),
@@ -21,6 +29,18 @@ const clientSchema = z.object({
 })
 
 type ClientFormData = z.infer<typeof clientSchema>
+
+const TYPE_OPTIONS = [
+  { value: 'direct', label: 'Directo' },
+  { value: 'agency', label: 'Agencia' },
+  { value: 'other', label: 'Otro' },
+]
+
+const TYPE_LABEL: Record<string, string> = {
+  direct: 'Directo',
+  agency: 'Agencia',
+  other: 'Otro',
+}
 
 export function ClientCreatePage() {
   const navigate = useNavigate()
@@ -64,6 +84,7 @@ export function ClientCreatePage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<ClientFormData>({
     resolver: zodResolver(clientSchema),
@@ -75,97 +96,174 @@ export function ClientCreatePage() {
     mutation.mutate(data)
   }
 
+  // Live preview values
+  const watched = watch()
+  const previewName = (watched.name ?? '').trim()
+  const previewType = TYPE_LABEL[watched.type] ?? 'Directo'
+  const previewContact = (watched.contact_name ?? '').trim()
+
   return (
-    <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Nuevo Cliente</h2>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      {/* Header — Design System PageHeader with form actions */}
+      <PageHeader
+        title="Nuevo cliente"
+        description="Registra una empresa y su contacto principal."
+        actions={
+          <>
+            <AppButton type="button" variant="ghost" onClick={() => navigate({ to: '/clientes' })}>
+              Cancelar
+            </AppButton>
+            <AppButton type="submit" variant="primary" loading={mutation.isPending}>
+              Guardar cliente
+            </AppButton>
+          </>
+        }
+      />
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 max-w-2xl">
-        <div className="bg-white rounded-lg border p-6">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">Datos del Cliente</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Nombre *</label>
-              <input id="name" type="text" {...register('name')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-              {errors.name && <p className="text-xs text-red-600 mt-1">{errors.name.message}</p>}
+      {serverError && (
+        <div className="mb-6 rounded-[12px] border border-[#FECACA] bg-[#FEF2F2] px-4 py-3 text-[13px] text-[#DC2626]">
+          {serverError}
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {/* Left column: form cards */}
+        <div className="flex flex-col gap-6">
+          {/* CARD 1 — Empresa */}
+          <SectionCard title="Empresa">
+            <div className="space-y-4">
+              <AppInput
+                label="Nombre"
+                placeholder="Ej. Banesco"
+                error={errors.name?.message}
+                {...register('name')}
+              />
+              <AppInput
+                label="Razón social"
+                placeholder="Ej. Banesco Banco Universal C.A."
+                error={errors.legal_name?.message}
+                {...register('legal_name')}
+              />
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <AppInput
+                  label="RIF / NIT"
+                  placeholder="J-12345678-9"
+                  error={errors.tax_id?.message}
+                  {...register('tax_id')}
+                />
+                <AppSelect
+                  label="Tipo"
+                  options={TYPE_OPTIONS}
+                  error={errors.type?.message}
+                  {...register('type')}
+                />
+              </div>
+
+              {/* Estado inicial — fijo en Prospecto al crear (default del backend) */}
+              <div className="flex items-center justify-between rounded-[12px] bg-[#F8FAFC] px-4 py-3">
+                <div>
+                  <p className="text-[14px] font-medium text-[#374151]">Estado inicial</p>
+                  <p className="text-[12px] text-[#94A3B8]">Los clientes nuevos se crean como prospecto.</p>
+                </div>
+                <AppBadge label="Prospecto" variant="info" />
+              </div>
             </div>
-            <div>
-              <label htmlFor="legal_name" className="block text-sm font-medium text-gray-700 mb-1">Razón Social</label>
-              <input id="legal_name" type="text" {...register('legal_name')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </SectionCard>
+
+          {/* CARD 2 — Contacto principal */}
+          <SectionCard title="Contacto principal">
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <AppInput
+                  label="Nombre"
+                  placeholder="Ej. Carlos Rodríguez"
+                  error={errors.contact_name?.message}
+                  {...register('contact_name')}
+                />
+                <AppInput
+                  label="Cargo"
+                  placeholder="Ej. Director de Publicidad"
+                  error={errors.contact_position?.message}
+                  {...register('contact_position')}
+                />
+              </div>
+              <AppInput
+                label="Email"
+                type="email"
+                placeholder="contacto@empresa.com"
+                error={errors.contact_email?.message}
+                {...register('contact_email')}
+              />
+              <AppInput
+                label="Teléfono"
+                placeholder="+58 414-1234567"
+                error={errors.contact_phone?.message}
+                {...register('contact_phone')}
+              />
             </div>
-            <div>
-              <label htmlFor="tax_id" className="block text-sm font-medium text-gray-700 mb-1">RIF/NIT</label>
-              <input id="tax_id" type="text" {...register('tax_id')} placeholder="J-12345678-9"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </SectionCard>
+
+          {/* CARD 3 — Información comercial */}
+          <SectionCard title="Información comercial">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <AppInput
+                label="Industria"
+                placeholder="Ej. Banca y Finanzas"
+                error={errors.industry?.message}
+                {...register('industry')}
+              />
+              <AppInput
+                label="Plazo de pago (días)"
+                placeholder="30"
+                error={errors.payment_terms?.message}
+                {...register('payment_terms')}
+              />
             </div>
-            <div>
-              <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">Tipo *</label>
-              <select id="type" {...register('type')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="direct">Directo</option>
-                <option value="agency">Agencia</option>
-                <option value="other">Otro</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="industry" className="block text-sm font-medium text-gray-700 mb-1">Industria</label>
-              <input id="industry" type="text" {...register('industry')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
-            <div>
-              <label htmlFor="payment_terms" className="block text-sm font-medium text-gray-700 mb-1">Plazo de pago</label>
-              <input id="payment_terms" type="text" {...register('payment_terms')} placeholder="30"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
-          </div>
+          </SectionCard>
         </div>
 
-        <div className="bg-white rounded-lg border p-6">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">Contacto Principal</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="contact_name" className="block text-sm font-medium text-gray-700 mb-1">Nombre *</label>
-              <input id="contact_name" type="text" {...register('contact_name')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-              {errors.contact_name && <p className="text-xs text-red-600 mt-1">{errors.contact_name.message}</p>}
-            </div>
-            <div>
-              <label htmlFor="contact_email" className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-              <input id="contact_email" type="email" {...register('contact_email')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-              {errors.contact_email && <p className="text-xs text-red-600 mt-1">{errors.contact_email.message}</p>}
-            </div>
-            <div>
-              <label htmlFor="contact_phone" className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
-              <input id="contact_phone" type="text" {...register('contact_phone')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
-            <div>
-              <label htmlFor="contact_position" className="block text-sm font-medium text-gray-700 mb-1">Cargo</label>
-              <input id="contact_position" type="text" {...register('contact_position')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
+        {/* Right column: live preview (sticky) */}
+        <div className="flex flex-col gap-6">
+          <div className="lg:sticky lg:top-6">
+            <SectionCard title="Vista previa">
+              <AppCard variant="default" className="flex flex-col p-5">
+                {/* Header */}
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-[#F3F4F6]">
+                      <Building2 className="h-5 w-5 text-[#64748B]" />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="truncate text-[15px] font-semibold text-[#0F172A]">
+                        {previewName || 'Nueva empresa'}
+                      </h3>
+                      <p className="mt-0.5 text-[12px] text-[#64748B]">{previewType}</p>
+                    </div>
+                  </div>
+                  <AppBadge label="Prospecto" variant="info" />
+                </div>
+
+                {/* Contact */}
+                <div className="mt-4 space-y-2 border-t border-[#F3F4F6] pt-4">
+                  <div className="flex items-center gap-2 text-[13px] text-[#374151]">
+                    <User className="h-4 w-4 shrink-0 text-[#94A3B8]" />
+                    <span className="truncate">{previewContact || 'Sin contacto principal'}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-[13px] text-[#64748B]">
+                    <Mail className="h-4 w-4 shrink-0 text-[#94A3B8]" />
+                    <span className="truncate">{watched.contact_email?.trim() || '—'}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-[13px] text-[#64748B]">
+                    <Phone className="h-4 w-4 shrink-0 text-[#94A3B8]" />
+                    <span className="truncate">{watched.contact_phone?.trim() || '—'}</span>
+                  </div>
+                </div>
+              </AppCard>
+              <p className="mt-3 text-[12px] text-[#94A3B8]">Así se verá tu cliente en el listado.</p>
+            </SectionCard>
           </div>
         </div>
-
-        {serverError && (
-          <div className="bg-red-50 border border-red-200 rounded-md p-4">
-            <p className="text-sm text-red-700">{serverError}</p>
-          </div>
-        )}
-
-        <div className="flex gap-3">
-          <button type="submit" disabled={mutation.isPending}
-            className="bg-blue-600 text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-blue-700 disabled:opacity-50">
-            {mutation.isPending ? 'Creando...' : 'Crear Cliente'}
-          </button>
-          <button type="button" onClick={() => navigate({ to: '/clientes' })}
-            className="border border-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">
-            Cancelar
-          </button>
-        </div>
-      </form>
-    </div>
+      </div>
+    </form>
   )
 }
