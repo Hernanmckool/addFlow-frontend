@@ -130,7 +130,11 @@ export function ClientShowPage() {
             <AppButton type="button" variant="secondary" onClick={() => navigate({ to: '/clientes' })}>
               Volver a Clientes
             </AppButton>
-            <AppButton type="button" variant="primary" disabled title="Disponible próximamente">
+            <AppButton
+              type="button"
+              variant="primary"
+              onClick={() => navigate({ to: '/clientes/$clientId/edit', params: { clientId } })}
+            >
               Editar
             </AppButton>
           </>

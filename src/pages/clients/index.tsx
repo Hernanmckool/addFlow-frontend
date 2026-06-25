@@ -295,8 +295,8 @@ function ClientCard({ client }: { client: Client }) {
 }
 
 /**
- * "Ver detalle" links to the client detail screen. "Editar" stays disabled
- * until the client edit screen exists.
+ * "Ver detalle" links to the client detail screen. "Editar" links to the
+ * client edit screen.
  */
 function RowActions({ clientId }: { clientId: string }) {
   return (
@@ -308,14 +308,13 @@ function RowActions({ clientId }: { clientId: string }) {
       >
         Ver detalle
       </Link>
-      <button
-        type="button"
-        disabled
-        title="Disponible próximamente"
-        className="text-[12px] font-semibold text-[#94A3B8] cursor-not-allowed"
+      <Link
+        to="/clientes/$clientId/edit"
+        params={{ clientId }}
+        className="text-[12px] font-semibold text-[#64748B] hover:text-[#0F172A] hover:underline"
       >
         Editar
-      </button>
+      </Link>
     </>
   )
 }
