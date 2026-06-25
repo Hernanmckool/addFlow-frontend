@@ -1,3 +1,4 @@
+import { type ReactNode } from 'react'
 import { Link } from '@tanstack/react-router'
 
 interface PageHeaderProps {
@@ -5,16 +6,21 @@ interface PageHeaderProps {
   description?: string
   action?: { label: string; to: string }
   secondaryAction?: { label: string; to: string }
+  /** Custom action node(s) rendered on the right. Takes precedence over link actions. */
+  actions?: ReactNode
 }
 
-export function PageHeader({ title, description, action, secondaryAction }: PageHeaderProps) {
+export function PageHeader({ title, description, action, secondaryAction, actions }: PageHeaderProps) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
       <div>
         <h1 className="text-[22px] font-bold text-[#0F172A] tracking-tight">{title}</h1>
         {description && <p className="text-[14px] text-[#64748B] mt-1">{description}</p>}
       </div>
-      {(action || secondaryAction) && (
+      {actions ? (
+        <div className="flex items-center gap-2">{actions}</div>
+      ) : (
+        (action || secondaryAction) && (
         <div className="flex items-center gap-2">
           {secondaryAction && (
             <Link
@@ -33,6 +39,7 @@ export function PageHeader({ title, description, action, secondaryAction }: Page
             </Link>
           )}
         </div>
+        )
       )}
     </div>
   )
