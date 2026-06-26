@@ -142,6 +142,15 @@ export function QuotationShowPage() {
             <AppButton type="button" variant="secondary" onClick={() => navigate({ to: '/cotizaciones' })}>
               Volver a cotizaciones
             </AppButton>
+            {quotation.status === 'draft' && (
+              <AppButton
+                type="button"
+                variant="secondary"
+                onClick={() => navigate({ to: '/cotizaciones/$quotationId/edit', params: { quotationId: quotation.id } })}
+              >
+                Editar
+              </AppButton>
+            )}
             {availableTransitions.map((t) => {
               const meta = ACTION_META[t.target] ?? { label: t.target, variant: 'secondary' as const }
               return (

@@ -345,13 +345,24 @@ function QuotationCard({
       </div>
 
       <div className="mt-4 flex items-center justify-between gap-3 border-t border-[#F3F4F6] pt-4">
-        <Link
-          to="/cotizaciones/$quotationId"
-          params={{ quotationId: quotation.id }}
-          className="text-[12px] font-semibold text-[#2563EB] hover:underline"
-        >
-          Ver detalle
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            to="/cotizaciones/$quotationId"
+            params={{ quotationId: quotation.id }}
+            className="text-[12px] font-semibold text-[#2563EB] hover:underline"
+          >
+            Ver detalle
+          </Link>
+          {quotation.status === 'draft' && (
+            <Link
+              to="/cotizaciones/$quotationId/edit"
+              params={{ quotationId: quotation.id }}
+              className="text-[12px] font-semibold text-[#64748B] hover:text-[#0F172A] hover:underline"
+            >
+              Editar
+            </Link>
+          )}
+        </div>
         <QuickActionButton status={quotation.status} pending={pending} onClick={onQuickAction} />
       </div>
     </AppCard>
@@ -446,6 +457,15 @@ function QuotationsTable({
               >
                 Ver detalle
               </Link>
+              {q.status === 'draft' && (
+                <Link
+                  to="/cotizaciones/$quotationId/edit"
+                  params={{ quotationId: q.id }}
+                  className="text-[12px] font-semibold text-[#64748B] hover:text-[#0F172A] hover:underline"
+                >
+                  Editar
+                </Link>
+              )}
               <QuickActionButton
                 status={q.status}
                 pending={pendingId === q.id}

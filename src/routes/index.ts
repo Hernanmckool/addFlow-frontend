@@ -16,6 +16,7 @@ import { ReservationCreatePage } from '@/pages/reservations/create'
 import { QuotationsPage } from '@/pages/quotations'
 import { QuotationCreatePage } from '@/pages/quotations/create'
 import { QuotationShowPage } from '@/pages/quotations/show'
+import { QuotationEditPage } from '@/pages/quotations/edit'
 import { CampaignsPage } from '@/pages/campaigns'
 import { CampaignCreatePage } from '@/pages/campaigns/create'
 import { CampaignShowPage } from '@/pages/campaigns/show'
@@ -123,6 +124,12 @@ const quotationShowRoute = createRoute({
   component: QuotationShowPage,
 })
 
+const quotationEditRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/cotizaciones/$quotationId/edit',
+  component: QuotationEditPage,
+})
+
 const campaignsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/campanas',
@@ -176,6 +183,7 @@ export const routeTree = rootRoute.addChildren([
   quotationsRoute,
   quotationCreateRoute,
   quotationShowRoute,
+  quotationEditRoute,
   campaignsRoute,
   campaignCreateRoute,
   campaignShowRoute,

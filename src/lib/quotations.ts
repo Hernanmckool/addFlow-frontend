@@ -79,6 +79,12 @@ export async function createQuotation(payload: CreateQuotationPayload): Promise<
   return response.data
 }
 
+export async function updateQuotation(id: string, payload: CreateQuotationPayload): Promise<Quotation> {
+  await getCsrfCookie()
+  const response = await api.put<Quotation>(`/api/quotations/${id}`, payload)
+  return response.data
+}
+
 export async function transitionQuotation(id: string, status: string): Promise<Quotation> {
   await getCsrfCookie()
   const response = await api.put<Quotation>(`/api/quotations/${id}/transition`, { status })
